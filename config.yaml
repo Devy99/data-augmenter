@@ -1,0 +1,36 @@
+text-code:
+  max-outputs: -1 # set -1 to get all outputs
+
+text:
+  data-column: 1
+  max-outputs: 100 # set -1 to get all outputs
+  outputs-per-rule: 2 
+  active-rules: [
+    "americanize_britishize_english",
+    "casual_to_formal",
+    "contraction_expansions",
+    "discourse_marker_substitution",
+    "formal_to_casual",
+    "insert_abbreviation",
+    "multilingual_back_translation",
+    "neural_question_paraphraser",
+    "number_to_word",
+    "style_paraphraser",
+   # "synonym_substitution"
+  ]
+
+code:
+  data-column: 1
+  max-outputs: 100 # set -1 to get all outputs
+  outputs-per-rule: 2
+  active-rules: [
+    "boolean_exchange",
+    "log_statement",
+    "loop_exchange",
+    "permute_statement",
+    "reorder_condition",
+    "switch_to_if",
+    "try_catch",
+    "unused_statement",
+    "variable-renaming"
+  ]
