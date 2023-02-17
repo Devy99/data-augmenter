@@ -24,7 +24,7 @@ def extract_code_specs(code: str, start_tag: str, end_tag: str):
         parts = right_split.split(end_tag)
         left_split, right_split = parts[0], parts[1]
         sentence += left_split
-        end_char = len(sentence)
+        end_char = len(sentence) + 1
             
         sentence += right_split
         
