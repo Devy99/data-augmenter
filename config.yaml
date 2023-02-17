@@ -32,5 +32,5 @@ code:
     "switch_to_if",
     "try_catch",
     "unused_statement",
-    "variable-renaming"
+    "variable_renaming"
   ]
