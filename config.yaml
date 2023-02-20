@@ -1,10 +1,10 @@
 text-code:
-  max-outputs: -1 # set -1 to get all outputs
+  max-outputs: 100
 
 text:
   data-column: 1
-  max-outputs: 100 # set -1 to get all outputs
-  outputs-per-rule: 2 
+  max-outputs: 100 
+  outputs-per-rule: 5 
   active-rules: [
     "americanize_britishize_english",
     "casual_to_formal",
@@ -16,21 +16,34 @@ text:
     "neural_question_paraphraser",
     "number_to_word",
     "style_paraphraser",
-   # "synonym_substitution"
+   # "synonym_substitution" Does not work with multiple threads
   ]
 
 code:
   data-column: 1
-  max-outputs: 100 # set -1 to get all outputs
-  outputs-per-rule: 2
+  max-outputs: 100 
+  outputs-per-rule: 5
   active-rules: [
+    "add_assignment_to_equal_assignment",
     "boolean_exchange",
+    "conditional_exp_to_single_if",
+    "if_dividing",
+    "infix_expression_dividing",
     "log_statement",
     "loop_exchange",
+    "loop_if_continue_to_else",
     "permute_statement",
+    "pp_to_add_assignment",
+    "prepostfix_expression_dividing",
     "reorder_condition",
+    "reverse_if_else",
+    "single_if_to_conditional_exp",
+    "statements_order_rearrangement",
+    "switch_string_equal",
     "switch_to_if",
     "try_catch",
     "unused_statement",
+    "var_declaration_dividing",
+    "var_declaration_merging",
     "variable_renaming"
   ]

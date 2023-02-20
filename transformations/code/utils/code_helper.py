@@ -2,8 +2,8 @@
 from javalang.tokenizer import tokenize
 import os, sys
 
-JAR_PATH = os.path.join(sys.path[0], 'transformations', 'code', 'utils', 'JavaTransformer.jar')
-
+JT_JAR_PATH = os.path.join(sys.path[0], 'transformations', 'code', 'utils', 'JavaTransformer.jar')
+SPAT_JAR_PATH = os.path.join(sys.path[0], 'transformations', 'code', 'utils', 'SPAT.jar')
 
 def tokenize_method(method):
   return ' '.join(token.value for token in tokenize(method))
