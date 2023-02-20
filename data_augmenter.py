@@ -16,7 +16,7 @@ def get_argparser() -> argparse.ArgumentParser:
                         dest='output',
                         required=False,
                         type=str,
-                        default='output.tsv',
+                        default='output.csv',
                         help='Output filepath where to store the TSV file')
     parser.add_argument('--workers', '-w',
                         metavar='N_WORKERS',
