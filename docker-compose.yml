@@ -1,0 +1,11 @@
+version: '2.2'
+
+services:
+  data-augmenter:
+    container_name: 'data-augmenter'
+    build: '.'
+    volumes:
+      - './output:/output'
+    environment:
+      - 'PYTHONUNBUFFERED=1'
+
