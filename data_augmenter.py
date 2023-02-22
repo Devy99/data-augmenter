@@ -10,14 +10,14 @@ def get_argparser() -> argparse.ArgumentParser:
     Get the configured argument parser
     """
 
-    parser = argparse.ArgumentParser(description='Augment text and code data from TSV file')
+    parser = argparse.ArgumentParser(description='Augment text and code data from CSV file')
     parser.add_argument('--output-filepath', '-o',
                         metavar='FILEPATH',
                         dest='output',
                         required=False,
                         type=str,
                         default='output.csv',
-                        help='Output filepath where to store the TSV file')
+                        help='Output filepath where to store the CSV file')
     parser.add_argument('--workers', '-w',
                         metavar='N_WORKERS',
                         dest='workers',
@@ -30,7 +30,7 @@ def get_argparser() -> argparse.ArgumentParser:
                         dest='chunk_size',
                         required=False,
                         type=int,
-                        default=100,
+                        default=1,
                         help='Size of the portion of the dataset to be processed by each thread.. Default value = 100')
     parser.add_argument('--verbose', '-v',
                         action='store_true',
@@ -67,10 +67,10 @@ if __name__ == '__main__':
     parser = get_argparser()
     args = parser.parse_args()
     
-    # Read tsv
+    # Read csv
     filepath = args.data_filepath
     if not os.path.isfile(filepath):
-        print('Input file not found. Enter the path of the TSV file containing the data to be augmented.')
+        print('Input file not found. Enter the path of the CSV file containing the data to be augmented.')
         exit()
     
     # Load config file

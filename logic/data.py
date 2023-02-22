@@ -35,7 +35,7 @@ class Data(ABC):
         """
         self._barrier = barrier
         
-    def compute(self, out_fp: str = 'output.tsv', workers: int = 1, chunk_size: int = 100) -> None:
+    def compute(self, out_fp: str = 'output.csv', workers: int = 1, chunk_size: int = 1) -> None:
         """
         Main function apt to perform the augmentation operation on the entire dataset taken as input
         and export it to an output file. It reads the dataset in chunks and assigns them to a specific number of threads.
