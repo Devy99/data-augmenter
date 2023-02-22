@@ -15,9 +15,10 @@ class VarDeclarationMerging(Transformation):
     def generate(self, sentence: str):
         sentence, block_line, start_char, end_char = extract_code_specs(sentence, '<START>', '<END>')
         output = subprocess.run(['java', '-jar', SPAT_JAR_PATH, sentence, 'VarDeclarationMerging', str(self.max_outputs),
-                                 str(block_line), str(start_char), str(end_char)], stdout=subprocess.PIPE)
+                                 str(block_line), str(start_char), str(end_char)],
+                                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
         result = output.stdout.decode('utf-8')
         
-        transformations = result.split('<<PLACEHOLDER>>')
+        transformations = result.split('<<PLACEHOLDER>>') if '<<PLACEHOLDER>>' in result else []
         transformations = [tokenize_method(trn) for trn in transformations if trn.strip() != ''] # clean sentences
         return transformations
