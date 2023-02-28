@@ -2,7 +2,7 @@ from __future__ import annotations
 from logic.data import Data
 from utils.augment_helper import TransformedData, get_class
 from transformations.code.code_generator import CodeGenerator
-from transformations.code.utils.code_helper import extract_code_specs, tokenize_method
+from transformations.code.utils.code_helper import extract_code_specs
 
 import pandas as pd
 
@@ -28,7 +28,7 @@ class CodeData(Data):
         for sid, code in enumerate(code_list):
             trs_id = chunk.index.values[sid]
             norm_sentence, block_line, start_char, end_char = extract_code_specs(code, '<START>', '<END>') # remove tags to code entities
-            results.add(TransformedData(trs_id, tokenize_method(norm_sentence), 'original'))
+            results.add(TransformedData(trs_id, norm_sentence, 'original'))
             
             # Apply transformation
             for rule in self._active_rules:
@@ -39,7 +39,7 @@ class CodeData(Data):
                 transformations = [item for item in transformations if item != code]
                 [results.add(TransformedData(trs_id, trs, rule)) for trs in transformations]
         
-        df = pd.DataFrame.from_records([s.to_dict() for s in results]).drop_duplicates()
+        df = pd.DataFrame.from_records([s.to_dict() for s in results]).drop_duplicates('sentence')
         
         # Select sample rows according to the max output value
         if self._max_outputs >= 1 :
