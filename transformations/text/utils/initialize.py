@@ -1,4 +1,4 @@
-﻿import spacy
+﻿import nltk, spacy
 import torchtext.vocab as vocab
 from spacy.tokenizer import Tokenizer
 from spacy.cli.download import download
@@ -17,7 +17,13 @@ glove = None
 def initialize_models():
     global spacy_nlp
     global glove
-
+    
+    # Download wordnet only if the resource does not exist
+    try:
+        nltk.data.find('corpora/wordnet')
+    except LookupError:
+        nltk.download("wordnet", quiet=True)
+    
     # load spacy
     try:
         spacy_nlp = spacy.load("en_core_web_sm")
@@ -27,7 +33,7 @@ def initialize_models():
     
 
     # load glove
-    glove = vocab.GloVe(name="6B", dim="100")
+    # glove = vocab.GloVe(name="6B", dim="100")
 
 
 def reinitialize_spacy():

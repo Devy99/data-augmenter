@@ -1,13 +1,10 @@
 ﻿from __future__ import annotations
 from transformations.transformation import Transformation
 from nltk.corpus import wordnet
-from spacy.cli.download import download
+from utils.threading_helper import synchronized
 
-import re
-import nltk
-import numpy as np
-import spacy
-import transformations.text.utils.lexical_counterfactual_generator.initialize as spacy_nlp
+import re, numpy as np
+import transformations.text.utils.initialize as spacy_nlp
 
 """
 Base Class for implementing the different input transformations a generation should be robust against.
@@ -36,6 +33,9 @@ def untokenize(words):
     step6 = step5.replace(" ` ", " '")
     return step6.strip()
 
+@synchronized
+def get_synsets(word: str, pos: str):
+    return wordnet.synsets(word, pos=pos)
 
 def synonym_substitution(
     text, spacy_pipeline, seed=42, prob=0.5, max_outputs=1
@@ -47,7 +47,7 @@ def synonym_substitution(
         "ADV": "r",
         "ADJ": "s",
     }
-
+    
     doc = spacy_pipeline(text)
     results = []
     for _ in range(max_outputs):
@@ -58,7 +58,7 @@ def synonym_substitution(
             if wn_pos is None:
                 result.append(word)
             else:
-                syns = wordnet.synsets(word, pos=wn_pos)
+                syns = get_synsets(word, wn_pos)
                 syns = [syn.name().split(".")[0] for syn in syns]
                 syns = [syn for syn in syns if syn.lower() != word.lower()]
                 if len(syns) > 0 and np.random.random() < prob:
@@ -85,20 +85,10 @@ class SynonymSubstitution(Transformation):
     def __init__(self, seed=42, prob=0.5, max_outputs=-1):
         super().__init__(seed, max_outputs=max_outputs)
         
-        try:
-            self.nlp = spacy_nlp.spacy_nlp if spacy_nlp.spacy_nlp else spacy.load("en_core_web_sm")
-        except Exception as e:
-            download(model="en_core_web_sm")
-            self.nlp = spacy_nlp.spacy_nlp if spacy_nlp.spacy_nlp else spacy.load("en_core_web_sm")
-
+        self.nlp = spacy_nlp.spacy_nlp
         self.prob = prob
+        if max_outputs == -1: self.max_outputs = 10
         
-        # Download only if the resource does not exist
-        try:
-            nltk.data.find('corpora/wordnet')
-        except LookupError:
-            nltk.download("wordnet", quiet=True)
-
 
     def generate(self, sentence: str):
         perturbed = synonym_substitution(

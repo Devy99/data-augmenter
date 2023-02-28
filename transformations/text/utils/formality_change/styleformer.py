@@ -28,7 +28,7 @@ class Styleformer():
         model = AutoModelForSeq2SeqLM.from_pretrained(ctf_model_tag, use_auth_token=False)
         cache_helper.add_file(model, f"{cache_file}-model")
             
-      tokenizer = cache_helper.get_file(f"{cache_file}-tokenizer")
+      tokenizer = cache_helper.get_file(f"{cache_file}-tokenizer", store=False)
       if tokenizer is None:
         tokenizer = AutoTokenizer.from_pretrained(ctf_model_tag, use_auth_token=False)
         cache_helper.add_file(tokenizer, f"{cache_file}-tokenizer")
@@ -44,7 +44,7 @@ class Styleformer():
         model = AutoModelForSeq2SeqLM.from_pretrained(ftc_model_tag, use_auth_token=False)
         cache_helper.add_file(model, f"{cache_file}-model")
             
-      tokenizer = cache_helper.get_file(f"{cache_file}-tokenizer")
+      tokenizer = cache_helper.get_file(f"{cache_file}-tokenizer", store=False)
       if tokenizer is None:
         tokenizer = AutoTokenizer.from_pretrained(ftc_model_tag, use_auth_token=False)
         cache_helper.add_file(tokenizer, f"{cache_file}-tokenizer")

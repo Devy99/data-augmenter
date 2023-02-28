@@ -24,9 +24,10 @@ class TextData(Data):
         generator = TextGenerator()
         self._active_rules = list(set(self._active_rules) & set(generator.available_rules))
         
-        for rule in self._active_rules:
-            for sid, sentence in enumerate(sentences):
-                trs_id = chunk.index.values[sid]
+        for sid, sentence in enumerate(sentences):
+            trs_id = chunk.index.values[sid]
+            
+            for rule in self._active_rules:
                 results.add(TransformedData(trs_id, sentence, 'original'))
                 
                 # Apply transformation
@@ -36,11 +37,8 @@ class TextData(Data):
                     
                 transformations = [item for item in transformations if item != sentence]
                 [results.add(TransformedData(trs_id, trs, rule)) for trs in transformations]
-            
-            # Wait here for all the threads 
-            self._barrier.wait()
         
-        df = pd.DataFrame.from_records([s.to_dict() for s in list(results)]).drop_duplicates()
+        df = pd.DataFrame.from_records([s.to_dict() for s in list(results)]).drop_duplicates('sentence')
         
         # Select sample rows according to the max output value
         if self._max_outputs >= 1 :

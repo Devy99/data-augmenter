@@ -19,7 +19,7 @@ class BackTranslation(Transformation):
             model_en_de = FSMTForConditionalGeneration.from_pretrained(name_en_de)
             cache_helper.add_file(model_en_de, f"{cache_file}-model")
                 
-        tokenizer_en_de = cache_helper.get_file(f"{cache_file}-tokenizer")
+        tokenizer_en_de = cache_helper.get_file(f"{cache_file}-tokenizer", store=False)
         if tokenizer_en_de is None:
             tokenizer_en_de = FSMTTokenizer.from_pretrained(name_en_de)
             cache_helper.add_file(tokenizer_en_de, f"{cache_file}-tokenizer")
@@ -38,7 +38,7 @@ class BackTranslation(Transformation):
             model_de_en = FSMTForConditionalGeneration.from_pretrained(name_de_en)
             cache_helper.add_file(model_de_en, f"{cache_file}-model")
                 
-        tokenizer_de_en = cache_helper.get_file(f"{cache_file}-tokenizer")
+        tokenizer_de_en = cache_helper.get_file(f"{cache_file}-tokenizer", store=False)
         if tokenizer_de_en is None:
             tokenizer_de_en = FSMTTokenizer.from_pretrained(name_de_en)
             cache_helper.add_file(tokenizer_de_en, f"{cache_file}-tokenizer")
