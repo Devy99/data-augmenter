@@ -20,6 +20,7 @@ class NeuralQuestionParaphraser(Transformation):
     keywords = ["transformer-based", "high-coverage", "high-generations"]
 
     def __init__(self, seed=0, max_outputs=-1):
+        if max_outputs == -1: max_outputs = 10
         super().__init__(seed, max_outputs=max_outputs)
         random.seed(seed)
         np.random.seed(seed)
@@ -33,7 +34,7 @@ class NeuralQuestionParaphraser(Transformation):
             model = T5ForConditionalGeneration.from_pretrained("ramsrigouthamg/t5_paraphraser")
             cache_helper.add_file(model, "ramsrigouthamg-t5_paraphraser-model")
             
-        tokenizer = cache_helper.get_file("ramsrigouthamg-t5_paraphraser-tokenizer")
+        tokenizer = cache_helper.get_file("ramsrigouthamg-t5_paraphraser-tokenizer", store=False)
         if tokenizer is None:
             tokenizer = T5Tokenizer.from_pretrained("ramsrigouthamg/t5_paraphraser")
             cache_helper.add_file(tokenizer, "ramsrigouthamg-t5_paraphraser-tokenizer")

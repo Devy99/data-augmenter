@@ -1,6 +1,6 @@
 ﻿from __future__ import annotations
 from transformations.transformation import Transformation
-from transformations.code.utils.code_helper import JT_JAR_PATH, extract_code_specs, tokenize_method
+from transformations.code.utils.code_helper import JT_JAR_PATH, extract_code_specs
 
 import subprocess
 
@@ -20,5 +20,4 @@ class TryCatch(Transformation):
         result = output.stdout.decode('utf-8')
         
         transformations = result.split('<<PLACEHOLDER>>') if '<<PLACEHOLDER>>' in result else []
-        transformations = [tokenize_method(trn) for trn in transformations if trn.strip() != ''] # clean sentences
-        return transformations
+        return [trn.strip() for trn in transformations if trn.strip() != ''] # clean sentences

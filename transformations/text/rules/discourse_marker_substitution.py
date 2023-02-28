@@ -107,6 +107,7 @@ class DiscourseMarkerSubstitution(Transformation):
     Code reference: https://github.com/GEM-benchmark/NL-Augmenter/tree/main/nlaugmenter/transformations/discourse_marker_substitution
     """
     def __init__(self, max_outputs=-1):
+        if max_outputs == -1: max_outputs = 10
         super().__init__(max_outputs=max_outputs)
         
     def generate(self, sentence: str):

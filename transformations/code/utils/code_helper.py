@@ -3,10 +3,6 @@
 JT_JAR_PATH = os.path.join(sys.path[0], 'transformations', 'code', 'utils', 'JavaTransformer.jar')
 SPAT_JAR_PATH = os.path.join(sys.path[0], 'transformations', 'code', 'utils', 'SPAT.jar')
 
-def tokenize_method(method):
-  clean_str = method.translate({ord(c): ' ' for c in string.whitespace})
-  return ' '.join(clean_str.split())
-
 def extract_code_specs(code: str, start_tag: str, end_tag: str):
     sentence = code
     block_line = False

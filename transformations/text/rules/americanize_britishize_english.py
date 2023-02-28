@@ -1,6 +1,6 @@
-﻿import requests
-from transformations.transformation import Transformation
+﻿from transformations.transformation import Transformation
 
+import os, json
 
 def britishize_americanize(string, final_dict):
     """
@@ -93,14 +93,18 @@ class AmericanizeBritishizeEnglish(Transformation):
         Gets the american to British english dictionary
         Merges both these dictionaries with the custom vocab dictionary.
         """
-        try:
-            url = "https://raw.githubusercontent.com/hyperreality/American-British-English-Translator/master/data/american_spellings.json"
-            american_british_dict = requests.get(url).json()
-
-            url = "https://raw.githubusercontent.com/hyperreality/American-British-English-Translator/master/data/british_spellings.json"
-            british_american_dict = requests.get(url).json()
-        except requests.exceptions.RequestException as e:
-            raise SystemExit(e)
+        
+        american_british_fp = os.path.join(
+        'transformations','text','utils','americanize_britishize_english', 'american_spellings.json'
+        )
+        with open(american_british_fp, "r") as fp:
+            american_british_dict = json.load(fp)
+        
+        british_american_fp = os.path.join(
+        'transformations','text','utils','americanize_britishize_english', 'british_spellings.json'
+        )
+        with open(british_american_fp, "r") as fp:
+            british_american_dict = json.load(fp)
 
         self.final_dict = {
             **american_british_dict,

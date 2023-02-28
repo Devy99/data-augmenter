@@ -77,6 +77,7 @@ class StyleParaphraser(Transformation):
         top_p: int = 0.0,
         temperature: float = 0.0,
     ):
+        if max_outputs == -1: max_outputs = 10
         super().__init__(max_outputs=max_outputs)
         logging.set_verbosity(40)
         try:
@@ -115,7 +116,7 @@ class StyleParaphraser(Transformation):
         model.to(self.device)
         self.gpt2_model = model  # GPT2ParentModule(gpt2=model, device=device)
             
-        tokenizer = cache_helper.get_file(f"{cache_path}-tokenizer")
+        tokenizer = cache_helper.get_file(f"{cache_path}-tokenizer", store=False)
         if tokenizer is None:
             tokenizer = GPT2Tokenizer.from_pretrained(model_path)
             cache_helper.add_file(tokenizer, f"{cache_path}-tokenizer")

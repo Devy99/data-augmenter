@@ -1,28 +1,30 @@
 text-code:
-  max-outputs: 100
+  max-outputs: -1
 
 text:
-  data-column: 1
-  max-outputs: 100 
-  outputs-per-rule: 5 
+  data-column: 2
+  max-outputs: -1 
+  outputs-per-rule: -1
   active-rules: [
     "americanize_britishize_english",
-    "casual_to_formal",
+    #"casual_to_formal", N.A.
     "contraction_expansions",
     "discourse_marker_substitution",
-    "formal_to_casual",
+    #"formal_to_casual", N.A.
     "insert_abbreviation",
-    "multilingual_back_translation",
-    "neural_question_paraphraser",
+    #"multilingual_back_translation", N.A.
+    #"neural_question_paraphraser", N.A.
     "number_to_word",
-    "style_paraphraser",
-   # "synonym_substitution" Does not work with multiple threads
+    #"style_paraphraser", N.A.
+    "correct_common_misspellings",
+    "replace_abbreviation_and_acronyms",
+    "synonym_substitution" 
   ]
 
 code:
   data-column: 1
-  max-outputs: 100 
-  outputs-per-rule: 5
+  max-outputs: -1
+  outputs-per-rule: 100
   active-rules: [
     "add_assignment_to_equal_assignment",
     "boolean_exchange",

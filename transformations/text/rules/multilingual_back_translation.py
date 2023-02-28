@@ -41,7 +41,7 @@ class MultilingualBackTranslation(Transformation):
             model = M2M100ForConditionalGeneration.from_pretrained("facebook/m2m100_418M")
             cache_helper.add_file(model, "facebook-m2m100_418M-model")
             
-        tokenizer = cache_helper.get_file("facebook-m2m100_418M-tokenizer")
+        tokenizer = cache_helper.get_file("facebook-m2m100_418M-tokenizer", store=False)
         if tokenizer is None:
             tokenizer = M2M100Tokenizer.from_pretrained("facebook/m2m100_418M")
             cache_helper.add_file(tokenizer, "facebook-m2m100_418M-tokenizer")

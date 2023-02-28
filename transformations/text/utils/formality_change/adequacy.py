@@ -11,7 +11,7 @@ class Adequacy():
       model = AutoModelForSequenceClassification.from_pretrained(model_tag)
       cache_helper.add_file(model, f"{cache_file}-model")
             
-    tokenizer = cache_helper.get_file(f"{cache_file}-tokenizer")
+    tokenizer = cache_helper.get_file(f"{cache_file}-tokenizer", store=False)
     if tokenizer is None:
       tokenizer = AutoTokenizer.from_pretrained(model_tag)
       cache_helper.add_file(tokenizer, f"{cache_file}-tokenizer")

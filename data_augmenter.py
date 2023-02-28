@@ -4,6 +4,7 @@ from logic.text_data import TextData
 from logic.text_code_data import TextCodeData
 
 import os, yaml, time, argparse, warnings
+import transformations.text.utils.initialize as text_helper
 
 def get_argparser() -> argparse.ArgumentParser:
     """
@@ -88,10 +89,12 @@ if __name__ == '__main__':
     print(f'Augmenting the dataset located on {filepath} ...')
     
     if args.type == 'text':
+        text_helper.initialize_models()
         data = TextData(filepath, txt_yml, verbose=args.verbose)
     elif args.type == 'code':
         data = CodeData(filepath, code_yml, verbose=args.verbose)
     elif args.type == 'text-code':
+        text_helper.initialize_models()
         data = TextCodeData(filepath, yml, verbose=args.verbose)
       
     data.compute(out_fp = args.output, workers = args.workers, chunk_size = args.chunk_size)
