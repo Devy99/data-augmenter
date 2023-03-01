@@ -68,7 +68,12 @@ def synonym_substitution(
 
         # detokenize sentences
         result = untokenize(result)
-        if result not in results:
+        
+        # Check result without whitespaces
+        text_nows = ''.join(text.split())
+        result_nows = ''.join(result.split())
+        
+        if result not in results and result_nows != text_nows:
             # make sure there is no dup in results
             results.append(result)
     return results
