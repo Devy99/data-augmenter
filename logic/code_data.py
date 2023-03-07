@@ -3,6 +3,7 @@ from logic.data import Data
 from utils.augment_helper import TransformedData, get_class
 from transformations.code.code_generator import CodeGenerator
 from transformations.code.utils.code_helper import extract_code_specs
+from transformations.code.utils import code_helper
 
 import pandas as pd
 
@@ -13,6 +14,7 @@ class CodeData(Data):
     
     def __init__(self, filepath: str, config: dict, verbose=False):
         super().__init__(filepath, config, verbose)
+        code_helper.preserve_closest_block = config['preserve-closest-block']
 
     def augment(self, chunk: pd.DataFrame) -> pd.DataFrame:
         results = set()

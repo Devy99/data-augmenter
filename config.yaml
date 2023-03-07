@@ -2,7 +2,7 @@ text-code:
   max-outputs: -1
 
 text:
-  data-column: 2
+  data-column: 1
   max-outputs: -1 
   outputs-per-rule: -1
   active-rules: [
@@ -25,6 +25,7 @@ code:
   data-column: 1
   max-outputs: -1
   outputs-per-rule: 100
+  preserve-closest-block: true
   active-rules: [
     "add_assignment_to_equal_assignment",
     "boolean_exchange",

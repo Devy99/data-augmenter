@@ -1,7 +1,10 @@
-﻿import os, sys, string
+﻿import os, sys
 
 JT_JAR_PATH = os.path.join(sys.path[0], 'transformations', 'code', 'utils', 'JavaTransformer.jar')
 SPAT_JAR_PATH = os.path.join(sys.path[0], 'transformations', 'code', 'utils', 'SPAT.jar')
+
+# Tool args
+preserve_closest_block = False
 
 def extract_code_specs(code: str, start_tag: str, end_tag: str):
     sentence = code
