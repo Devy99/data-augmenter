@@ -1,6 +1,6 @@
 ﻿from transformations.transformation import Transformation
 
-import os, json
+import os, json, transformations.text.utils.text_helper as text_helper
 
 def britishize_americanize(string, final_dict):
     """
@@ -10,8 +10,12 @@ def britishize_americanize(string, final_dict):
     Returns:
         str: String after replacing the words
     """
-    string = " ".join([final_dict.get(word, word) for word in string.split()])
-    return string
+    tokens = []
+    for word in string.split():
+        t = final_dict.get(word, word) if not text_helper.is_protected(word, string) else word
+        tokens.append(t)
+    # string = " ".join([final_dict.get(word, word) for word in string.split()])
+    return " ".join(tokens)
 
 class AmericanizeBritishizeEnglish(Transformation):
     """

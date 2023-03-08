@@ -3,6 +3,7 @@ from transformations.transformation import Transformation
 
 import os, json
 import transformations.text.utils.initialize as spacy_nlp
+import transformations.text.utils.text_helper as text_helper
 
 class CorrectCommonMisspellings(Transformation):
 
@@ -13,13 +14,24 @@ class CorrectCommonMisspellings(Transformation):
 
     def generate(self, sentence: str):
         doc = self.nlp(sentence)
+        
+        tokens = []
+        for token in doc:
+            t = token.text
+            if not text_helper.is_protected(token.text, sentence):
+                t = self.COMMON_MISSPELLINGS_DICT.get(token.text, token.text) 
+                
+            if token.whitespace_: t += " "
+            tokens.append(t)
+        """
         perturbed_text = [
             self.COMMON_MISSPELLINGS_DICT.get(token.text, token.text) + " "
             if token.whitespace_
             else self.COMMON_MISSPELLINGS_DICT.get(token.text, token.text)
             for token in doc
         ]
-        return ["".join(perturbed_text)]
+        """
+        return ["".join(tokens)]
 
 
 def get_common_misspellings_dict():

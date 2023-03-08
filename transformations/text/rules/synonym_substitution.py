@@ -5,11 +5,11 @@ from utils.threading_helper import synchronized
 
 import re, numpy as np
 import transformations.text.utils.initialize as spacy_nlp
+import transformations.text.utils.text_helper as text_helper
 
 """
 Base Class for implementing the different input transformations a generation should be robust against.
 """
-
 def untokenize(words):
     """
     Untokenizing a text undoes the tokenizing operation, restoring
@@ -54,6 +54,10 @@ def synonym_substitution(
         result = []
         for token in doc:
             word = token.text
+            if text_helper.is_protected(word, text):
+                result.append(word)
+                continue
+            
             wn_pos = upos_wn_dict.get(token.pos_)
             if wn_pos is None:
                 result.append(word)

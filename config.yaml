@@ -5,17 +5,13 @@ text:
   data-column: 1
   max-outputs: -1 
   outputs-per-rule: -1
+  preserve-text: true
   active-rules: [
     "americanize_britishize_english",
-    #"casual_to_formal", N.A.
     "contraction_expansions",
     "discourse_marker_substitution",
-    #"formal_to_casual", N.A.
     "insert_abbreviation",
-    #"multilingual_back_translation", N.A.
-    #"neural_question_paraphraser", N.A.
     "number_to_word",
-    #"style_paraphraser", N.A.
     "correct_common_misspellings",
     "replace_abbreviation_and_acronyms",
     "synonym_substitution" 

@@ -4,6 +4,7 @@ from transformations.transformation import Transformation
 
 import os, ftfy, random
 import transformations.text.utils.initialize as spacy_nlp
+import transformations.text.utils.text_helper as text_helper
 
 
 def load(path_to_file: str) -> List[List[str]]:
@@ -304,7 +305,8 @@ class ReplaceAbbreviationAndAcronyms(Transformation):
             )
 
         for _token in tokens_to_replace:
-            self.replace_abbreviation(_token)
+            if not text_helper.is_protected(_token["text"], sentence):
+                self.replace_abbreviation(_token)
 
         result = "".join(
             _token["text"] + _token["end_space"] for _token in tagged_tokens

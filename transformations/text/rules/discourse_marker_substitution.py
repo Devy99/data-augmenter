@@ -2,8 +2,7 @@
 from transformations.transformation import Transformation
 from collections import defaultdict
 
-import random
-import re
+import re, random, transformations.text.utils.text_helper as text_helper
 
 
 """
@@ -65,8 +64,13 @@ def discourse_marker_substitution(text, seed=0, max_output=1):
     perturbed_texts = []
     for _ in range(max_output):
         present_markers = [
+            m for m in MARKER_TO_CLASS if (m in text.lower().split()) and (not text_helper.is_protected(m, text))
+        ]
+        """
+        present_markers = [
             m for m in MARKER_TO_CLASS if m in text.lower().split()
         ]
+        """
 
         if not present_markers:
             return [text]

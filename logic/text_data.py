@@ -4,6 +4,7 @@ from utils.augment_helper import TransformedData, get_class
 from transformations.text.text_generator import TextGenerator
 
 import pandas as pd
+import transformations.text.utils.text_helper as text_helper
 
 class TextData(Data):
     """
@@ -12,6 +13,7 @@ class TextData(Data):
     
     def __init__(self, filepath: str, config: dict, verbose=False):
         super().__init__(filepath, config, verbose)
+        text_helper.preserve_text = config['preserve-text']
 
     def augment(self, chunk: pd.DataFrame) -> pd.DataFrame:
         results = set()

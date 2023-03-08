@@ -1,7 +1,7 @@
 ﻿from __future__ import annotations
 from transformations.transformation import Transformation
 
-import re
+import re, transformations.text.utils.text_helper as text_helper
 
 class ContractionExpansions(Transformation):
     """
