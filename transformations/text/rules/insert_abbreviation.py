@@ -54,10 +54,11 @@ class InsertAbbreviation(Transformation):
         for v in results:
             from_token = v[1][0]
             to_token = v[1][1]
-            if not text_helper.is_protected(v[0], sentence):
-                perturbed_texts = (
-                    perturbed_texts[:from_token]
-                    + v[0]
-                    + perturbed_texts[to_token:]
-                )
+            original_word = sentence[from_token:to_token].strip()
+            replace = v[0] if not text_helper.is_protected(original_word, sentence) else original_word
+            perturbed_texts = (
+                perturbed_texts[:from_token]
+                + replace
+                + perturbed_texts[to_token:]
+            )
         return [perturbed_texts]

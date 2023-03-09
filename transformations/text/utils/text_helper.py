@@ -23,15 +23,24 @@ preserve_text = False
 def is_camel_case(word: str):
     return word != word.lower() and word != word.upper() and '_' not in word
 
-def is_in_quotes(word: str, sentence: str):
+def find_quotations(sentence: str):
     # Normalize quotes
-    types = ["'", "‘", "’", "´", "“", "”", "--"]
-    normalized = sentence
+    normalized = sentence.strip()
+    types = ["''", "‘", "’", "´", "“", "”", "--"]
     for type in types:
         normalized = normalized.replace(type, "\"")
-    
+        
+    normalized = re.sub("'(?!\w)|(?!\w)'", "\"", normalized)
+    normalized = normalized.replace("'", "\"")
+    if normalized.startswith("'"): normalized.replace("'", "\"", 1)
+    if normalized.endswith("'"): normalized = normalized[:-1] + "\""
+        
     # Extract quotations
-    quotations = re.findall('"([^"]*)"', normalized)
+    return re.findall('"([^"]*)"', normalized)
+
+def is_in_quotes(word: str, sentence: str):
+    # Extract quotations
+    quotations = find_quotations(sentence)
     protected_words = list(itertools.chain(*[ele.split() for ele in quotations]))
     return word in protected_words
 
