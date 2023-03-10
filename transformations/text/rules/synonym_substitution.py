@@ -79,7 +79,7 @@ def synonym_substitution(
                     result.append(np.random.choice(syns).replace("_", " "))
                 else:
                     result.append(word)
-
+                    
         # detokenize sentences
         result = untokenize(result)
         
