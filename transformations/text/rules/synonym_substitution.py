@@ -32,6 +32,7 @@ def untokenize(words):
         .replace(" 's", "'s")
         .replace(" 're", "'re")
         .replace(" 've", "'ve")
+        .replace(" 'd", "'d")
         .replace("can not", "cannot")
     )
     

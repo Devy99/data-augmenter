@@ -33,7 +33,7 @@ def load_reserved_words():
             tokens = [t.replace('_',' ') for t in tokens]
             words.extend(tokens)
     
-    return words
+    return set(words)
 
 reserved_words = load_reserved_words()
 
@@ -51,8 +51,7 @@ def find_quotations(sentence: str):
         normalized = normalized.replace(type, "\"")
     
     # Handle the apostrophe
-    normalized = re.sub("'(?!\w)|(?!\w)'", "\"", normalized)
-    normalized = normalized.replace("'", "\"")
+    normalized = re.sub("(?<!\w)'|'(?!\w)", "\"", normalized)
     if normalized.startswith("'"): normalized.replace("'", "\"", 1)
     if normalized.endswith("'"): normalized = normalized[:-1] + "\""
         
@@ -62,6 +61,8 @@ def find_quotations(sentence: str):
 def is_in_quotes(word: str, sentence: str):
     # Extract quotations
     quotations = find_quotations(sentence)
+    symbols_blacklist = '!"#$%&()*+,-./:;<=>?@[\]^_`{|}~'
+    quotations = [q.translate(str.maketrans(' ', ' ', symbols_blacklist)) for q in quotations]
     protected_words = list(itertools.chain(*[ele.split() for ele in quotations]))
     return word in protected_words
 
