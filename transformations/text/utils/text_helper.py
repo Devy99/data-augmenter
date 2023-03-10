@@ -29,7 +29,8 @@ def load_reserved_words():
     thesaurus_path = os.path.join('transformations','text','utils','reserved_words', 'se-thesaurus.txt')
     with open(thesaurus_path, 'r') as file:
         for line in file:
-            tokens = line.split(',')
+            tokens = line.strip().split(',')
+            tokens = [t.replace('_',' ') for t in tokens]
             words.extend(tokens)
     
     return words
