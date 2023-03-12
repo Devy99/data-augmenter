@@ -18,10 +18,10 @@ def untokenize(words):
     except for line breaks.
     ref: https://github.com/commonsense/metanl/blob/master/metanl/token_utils.py#L28
     """
-    text = " ".join(words)        
+    text = " ".join(words)  
     step1 = (
         text.replace("`` ", '"').replace(" ''", '"').replace(". . .", "...")
-    )
+    )     
     step2 = step1.replace(" ( ", " (").replace(" ) ", ") ")
     step3 = re.sub(r' ([.,:;?!%]+)([ \'"`])', r"\1\2", step2)
     step4 = re.sub(r" ([.,:;?!%]+)$", r"\1", step3)
@@ -36,13 +36,8 @@ def untokenize(words):
         .replace("can not", "cannot")
     )
     
-    step6 = step5
-    items = text_helper.find_quotations(step6)
-    for quotation in items:
-        step6 = step6.replace(quotation, quotation.strip())
-    
-    step7 = step6.replace(" ` ", " '")
-    return step7.strip()
+    step6 = step5.replace(" ` ", " '")
+    return step6.strip()
 
 @synchronized
 def get_synsets(word: str, pos: str):
