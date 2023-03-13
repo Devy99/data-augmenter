@@ -1,3 +1,4 @@
+from typing import List, Set
 from javalang.tokenizer import tokenize
 from javalang.parser import Parser
 import os, re, itertools
@@ -19,7 +20,7 @@ JAVA_LITERAL_VALUES = [
         'true', 'false', 'null'
     ]
 
-def load_reserved_words():
+def load_reserved_words() -> Set:
     words = []
     
     # Add Java keywords
@@ -43,15 +44,16 @@ sentences_blacklist = {}
 # Tool args
 preserve_text = False
 
-def is_protected(word: str, sentence: str):
+def is_protected(word: str, sentence: str) -> bool:
     if not preserve_text: return False
     return (word in reserved_words) or is_camel_case(word) or is_in_quotes(word, sentence) or from_code_snippet(word, sentence)
 
 
-def is_camel_case(word: str):
+def is_camel_case(word: str) -> bool:
     return word != word.lower() and word != word.upper() and '_' not in word
 
-def find_quotations(sentence: str):
+#### QUOTE EXTRACTION ####
+def find_quotations(sentence: str) -> List[str]:
     # Normalize quotes
     normalized = sentence.strip()
     types = ["''", "‘", "’", "´", "“", "”", "--"]
@@ -66,7 +68,7 @@ def find_quotations(sentence: str):
     # Extract quotations
     return re.findall('"([^"]*)"', normalized)
 
-def is_in_quotes(word: str, sentence: str):
+def is_in_quotes(word: str, sentence: str) -> bool:
     # Extract quotations
     quotations = find_quotations(sentence)
     symbols_blacklist = '!"#$%&()*+,-./:;<=>?@[\]^_`{|}~'
@@ -76,52 +78,64 @@ def is_in_quotes(word: str, sentence: str):
 
 
 #### CODE EXTRACTION ####
-def from_code_snippet(word, sentence):
+def from_code_snippet(word: str, sentence: str) -> bool:
     if sentence not in sentences_blacklist.keys():
         sentences_blacklist[sentence] = extract_java_code(sentence)
     
     snippets = sentences_blacklist[sentence] 
-    tokens = set(itertools.chain(*[snippet.split() for snippet in snippets]))
+    tokens = set(itertools.chain(*[tokenize_snippet(code) for code in snippets]))
     return word in tokens
 
-def extract_java_code(sentence):
-    snippets = []
+def tokenize_snippet(code: str) -> List[str]:
+    try:     
+        return [token.value for token in tokenize(code)]
+    except Exception: 
+        return [token for token in code.split()]
     
+
+def remove_from_blacklist(sentences: List[str]) -> None:
+    for key in sentences:
+        sentences_blacklist.pop(key, None)
+
+def extract_java_code(sentence: str) -> List[str]:
+    # Define the length of the initial expression
     tokens, size = sentence.split(), 3
-    length = len(tokens) - size + 1
     last_index = None
     
-    if len(tokens) > 100 or not any(keyword in tokens for keyword in JAVA_KEYWORDS): return []
+    # Check if there is any java keyword in the string
+    if not contains_java_code(tokens): return []
     
-    for i in range(length):
-        if last_index != None and i < last_index:
+    snippets = []
+    length = len(tokens) - size + 1
+    for x in range(length):
+        # Consume tokens already seen
+        if last_index != None and x < last_index:
             continue
-        else:
-            last_index = None
-            
-        remaining_tokens = tokens[i:]
-        if not any(keyword in remaining_tokens for keyword in JAVA_KEYWORDS): break
         
-        ti = i + size
-        last_snippet = None
-        fail_count = 0
+        # Check if there is any java keyword in the remaining tokens
+        remaining_tokens = tokens[x:]
+        if not contains_java_code(remaining_tokens): break
+        
+        y = x + size
+        last_snippet, last_index, fail_count = None, None, 0
         while True:
-            t = tokens[i: i + ti]
+            t = tokens[x:y]
             string = " ".join(t)
             if is_java(string): 
-                last_snippet, last_index = string, ti
-            else:
+                last_snippet, last_index = string, y
+            else: # Count number of non-java consecutive expression
                 fail_count += 1
             
-            ti += 1
-            if ti >= len(tokens) or fail_count == 5: break
+            if y >= len(tokens) or fail_count == 25: 
+                break
+            y = y + 1
         
         if last_snippet != None: 
             snippets.append(last_snippet)
         
     return snippets
 
-def is_java(code):
+def is_java(code: str) -> bool:
     code = "class Main { public static void main(String[] args) {" + code + ";} }"
     
     try:     
@@ -131,3 +145,11 @@ def is_java(code):
     except Exception: 
         return False
     return True
+
+def contains_java_code(tokens: List[str]) -> bool:
+    keywords = []
+    keywords.extend(JAVA_KEYWORDS)
+    keywords.extend(JAVA_IDENTIFIERS)
+    keywords.extend(JAVA_LITERAL_VALUES)
+    
+    return any(keyword in tokens for keyword in keywords) or any(is_camel_case(token) for token in tokens)

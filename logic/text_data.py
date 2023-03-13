@@ -40,6 +40,9 @@ class TextData(Data):
                 transformations = [item for item in transformations if item != sentence]
                 [results.add(TransformedData(trs_id, trs, rule)) for trs in transformations]
         
+        # Clear blacklist dictionary
+        if text_helper.preserve_text: text_helper.remove_from_blacklist(sentences)
+        
         df = pd.DataFrame.from_records([s.to_dict() for s in list(results)]).drop_duplicates('sentence')
         
         # Select sample rows according to the max output value
