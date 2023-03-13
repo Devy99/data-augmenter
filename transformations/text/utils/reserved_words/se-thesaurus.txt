@@ -3729,3 +3729,7 @@ systemexit,system.exit
 gutters,gutter
 pfobject,pfobjects
 volume,volumes
+thread,threads,threaded,threading
+bit,bits
+test,tests,tested,testing
+hard-coded
