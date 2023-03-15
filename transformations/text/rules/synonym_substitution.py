@@ -5,11 +5,11 @@ from utils.threading_helper import synchronized
 
 import re, numpy as np
 import transformations.text.utils.initialize as spacy_nlp
+import transformations.text.utils.text_helper as text_helper
 
 """
 Base Class for implementing the different input transformations a generation should be robust against.
 """
-
 def untokenize(words):
     """
     Untokenizing a text undoes the tokenizing operation, restoring
@@ -18,18 +18,24 @@ def untokenize(words):
     except for line breaks.
     ref: https://github.com/commonsense/metanl/blob/master/metanl/token_utils.py#L28
     """
-    text = " ".join(words)
+    text = " ".join(words)  
     step1 = (
         text.replace("`` ", '"').replace(" ''", '"').replace(". . .", "...")
-    )
+    )     
     step2 = step1.replace(" ( ", " (").replace(" ) ", ") ")
     step3 = re.sub(r' ([.,:;?!%]+)([ \'"`])', r"\1\2", step2)
     step4 = re.sub(r" ([.,:;?!%]+)$", r"\1", step3)
     step5 = (
-        step4.replace(" '", "'")
+        step4
         .replace(" n't", "n't")
+        .replace(" 'm", "'m")
+        .replace(" 's", "'s")
+        .replace(" 're", "'re")
+        .replace(" 've", "'ve")
+        .replace(" 'd", "'d")
         .replace("can not", "cannot")
     )
+    
     step6 = step5.replace(" ` ", " '")
     return step6.strip()
 
@@ -54,6 +60,10 @@ def synonym_substitution(
         result = []
         for token in doc:
             word = token.text
+            if text_helper.is_protected(word, text):
+                result.append(word)
+                continue
+            
             wn_pos = upos_wn_dict.get(token.pos_)
             if wn_pos is None:
                 result.append(word)
@@ -65,10 +75,15 @@ def synonym_substitution(
                     result.append(np.random.choice(syns).replace("_", " "))
                 else:
                     result.append(word)
-
+                    
         # detokenize sentences
         result = untokenize(result)
-        if result not in results:
+        
+        # Check result without whitespaces
+        text_nows = ''.join(text.split())
+        result_nows = ''.join(result.split())
+        
+        if result not in results and result_nows != text_nows:
             # make sure there is no dup in results
             results.append(result)
     return results

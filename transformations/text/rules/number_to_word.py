@@ -2,6 +2,7 @@
 from transformations.transformation import Transformation
 
 import inflect
+import transformations.text.utils.text_helper as text_helper
 
 """
 Verbalizing numbers of the text
@@ -13,7 +14,7 @@ def word_to_number(text):
     results = []
     trans = []
     for token in text.split():
-        if token.isdigit():
+        if token.isdigit() and (not text_helper.is_protected(token, text)):
             words = infEng.number_to_words(int(token), wantlist=True)
             trans.extend(words)
         else:

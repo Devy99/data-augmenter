@@ -3,6 +3,7 @@ from transformations.transformation import Transformation
 from pathlib import Path
         
 import os
+import transformations.text.utils.text_helper as text_helper
 import transformations.text.utils.insert_abbreviation.grammaire as grammaire
 
 def readfile(file):
@@ -53,9 +54,11 @@ class InsertAbbreviation(Transformation):
         for v in results:
             from_token = v[1][0]
             to_token = v[1][1]
+            original_word = sentence[from_token:to_token].strip()
+            replace = v[0] if not text_helper.is_protected(original_word, sentence) else original_word
             perturbed_texts = (
                 perturbed_texts[:from_token]
-                + v[0]
+                + replace
                 + perturbed_texts[to_token:]
             )
         return [perturbed_texts]
