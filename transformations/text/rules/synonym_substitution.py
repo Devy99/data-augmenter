@@ -56,10 +56,18 @@ def synonym_substitution(
     
     doc = spacy_pipeline(text)
     results = []
+    seen = set()
     for _ in range(max_outputs):
         result = []
-        for token in doc:
+        trs_count = 0
+        for token in doc:            
             word = token.text
+            
+            # Skip if a token has already been modified
+            if trs_count > 0:
+                result.append(word)
+                continue
+            
             if text_helper.is_protected(word, text):
                 result.append(word)
                 continue
@@ -71,8 +79,10 @@ def synonym_substitution(
                 syns = get_synsets(word, wn_pos)
                 syns = [syn.name().split(".")[0] for syn in syns]
                 syns = [syn for syn in syns if syn.lower() != word.lower()]
-                if len(syns) > 0 and np.random.random() < prob:
+                if len(syns) > 0 and np.random.random() < prob and token not in seen:
+                    seen.add(token)
                     result.append(np.random.choice(syns).replace("_", " "))
+                    trs_count += 1
                 else:
                     result.append(word)
                     
