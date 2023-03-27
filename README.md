@@ -110,17 +110,16 @@ Below is an example configuration for the dataset type with only text data:
           data-column: 1
           max-outputs: 100 
           outputs-per-rule: 5 
+          preserve-text: false
           active-rules: [
               "americanize_britishize_english",
-              "casual_to_formal",
               "contraction_expansions",
               "discourse_marker_substitution",
-              "formal_to_casual",
               "insert_abbreviation",
-              "multilingual_back_translation",
-              "neural_question_paraphraser",
               "number_to_word",
-              "style_paraphraser"
+              "correct_common_misspellings",
+              "replace_abbreviation_and_acronyms",
+              "synonym_substitution" 
           ]
 ```
 
