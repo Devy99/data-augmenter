@@ -67,7 +67,7 @@ class Data(ABC):
         :param data: dataset to be exported
         :param out_fp: filepath in which to append the dataset 
         """
-        data.to_csv(out_fp, sep=',', mode='a', header=False, index=False, quoting=csv.QUOTE_ALL, escapechar='\\')
+        data.to_csv(out_fp, sep=',', mode='a', header=False, index=False)
     
     def __load_reader(self, filepath: str, chunk_size: int) -> TextFileReader:
         """
