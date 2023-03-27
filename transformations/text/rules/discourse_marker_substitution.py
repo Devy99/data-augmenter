@@ -42,7 +42,7 @@ MARKER_TO_CLASS = {
     "previously": "Temporal.Asynchronous.Succession",
     "similarly": "Expansion.Conjunction",
     "since": "Contingency.Cause.Reason",
-    "so,": "Contingency.Cause.Result",
+#   "so,": "Contingency.Cause.Result",
     "specifically": "Expansion.Restatement.Specification",
     "subsequently": "Temporal.Asynchronous.Precedence",
     "then,": "Temporal.Asynchronous.Precedence",

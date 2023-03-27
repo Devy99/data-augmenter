@@ -115,7 +115,7 @@ class ContractionExpansions(Transformation):
 
         def cont(possible):
             match = possible.group(1)
-            if text_helper.is_protected(match, sentence): return match
+            if text_helper.is_protected(match, sentence): return match + " "
             
             first_char = match[0]
             expanded_contraction = self.reverse_contraction_map.get(

@@ -3732,4 +3732,8 @@ volume,volumes
 thread,threads,threaded,threading
 bit,bits
 test,tests,tested,testing
-hard-coded
+coded,hard-coded
+cast,casts,casted,casting
+map,maps
+set,sets
+list,lists
