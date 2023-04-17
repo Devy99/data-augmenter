@@ -5,6 +5,7 @@ SPAT_JAR_PATH = os.path.join(sys.path[0], 'transformations', 'code', 'utils', 'S
 
 # Tool args
 preserve_closest_block = False
+reverse_protection = False
 
 def extract_code_specs(code: str, start_tag: str, end_tag: str):
     sentence = code

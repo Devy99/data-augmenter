@@ -3,9 +3,9 @@ text-code:
 
 text:
   data-column: 1
-  max-outputs: -1 
+  max-outputs: 1
   outputs-per-rule: -1
-  preserve-text: false
+  preserve-text: true
   active-rules: [
     "americanize_britishize_english",
     "contraction_expansions",
@@ -18,10 +18,11 @@ text:
   ]
 
 code:
-  data-column: 1
+  data-column: 0
   max-outputs: -1
   outputs-per-rule: 100
   preserve-closest-block: false
+  reverse-protection: true
   active-rules: [
     "add_assignment_to_equal_assignment",
     "boolean_exchange",

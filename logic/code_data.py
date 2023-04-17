@@ -15,6 +15,7 @@ class CodeData(Data):
     def __init__(self, filepath: str, config: dict, verbose=False):
         super().__init__(filepath, config, verbose)
         code_helper.preserve_closest_block = config['preserve-closest-block']
+        code_helper.reverse_protection = config['reverse-protection']
 
     def augment(self, chunk: pd.DataFrame) -> pd.DataFrame:
         results = set()
