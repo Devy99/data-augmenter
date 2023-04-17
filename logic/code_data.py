@@ -31,7 +31,8 @@ class CodeData(Data):
             trs_id = chunk.index.values[sid]
             norm_sentence, block_line, start_char, end_char = extract_code_specs(code, '<START>', '<END>') # remove tags to code entities
             results.add(TransformedData(trs_id, norm_sentence, 'original'))
-            
+            if self._max_outputs == 1 : continue
+                
             # Apply transformation
             for rule in self._active_rules:
                 cname = ''.join([ele.capitalize() for ele in rule.split('_')])
