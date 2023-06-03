@@ -28,10 +28,10 @@ class TextData(Data):
         
         for sid, sentence in enumerate(sentences):
             trs_id = chunk.index.values[sid]
+            results.add(TransformedData(trs_id, sentence, 'original'))
+            if self._max_outputs == 1 : continue
             
             for rule in self._active_rules:
-                results.add(TransformedData(trs_id, sentence, 'original'))
-                
                 # Apply transformation
                 cname = ''.join([ele.capitalize() for ele in rule.split('_')])
                 generator.rule = get_class(generator.RULES_PACKAGE + rule + '.' + cname)(max_outputs=self._outputs_per_rule)
